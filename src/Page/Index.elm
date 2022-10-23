@@ -1,6 +1,7 @@
 module Page.Index exposing (Data, Model, Msg, page)
 
 import DataSource exposing (DataSource)
+import Element
 import Head
 import Head.Seo as Seo
 import Page exposing (Page, StaticPayload)
@@ -39,7 +40,7 @@ data =
 head :
     StaticPayload Data RouteParams
     -> List Head.Tag
-head static =
+head _ =
     Seo.summary
         { canonicalUrlOverride = Nothing
         , siteName = "elm-pages"
@@ -65,5 +66,17 @@ view :
     -> Shared.Model
     -> StaticPayload Data RouteParams
     -> View Msg
-view maybeUrl sharedModel static =
-    View.placeholder "/"
+view _ _ _ =
+    { title = "🔭"
+    , body = body
+    }
+
+
+body : Element.Element msg
+body =
+    Element.column
+        [ Element.centerX
+        , Element.centerY
+        ]
+        [ Element.text <| "Hi."
+        ]

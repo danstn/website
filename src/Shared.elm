@@ -1,7 +1,11 @@
 module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 
 import Browser.Navigation
+import Colors
 import DataSource
+import Element
+import Element.Background as Background
+import Element.Font as Font
 import Html exposing (Html)
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
@@ -58,7 +62,7 @@ init :
             , pageUrl : Maybe PageUrl
             }
     -> ( Model, Cmd Msg )
-init navigationKey flags maybePagePath =
+init _ _ _ =
     ( { showMobileMenu = False }
     , Cmd.none
     )
@@ -70,7 +74,7 @@ update msg model =
         OnPageChange _ ->
             ( { model | showMobileMenu = False }, Cmd.none )
 
-        SharedMsg globalMsg ->
+        SharedMsg _ ->
             ( model, Cmd.none )
 
 
@@ -94,7 +98,19 @@ view :
     -> (Msg -> msg)
     -> View msg
     -> { body : Html msg, title : String }
-view sharedData page model toMsg pageView =
-    { body = Html.div [] pageView.body
+view _ _ _ _ pageView =
+    { body =
+        pageView.body
+            |> Element.layout
+                [ Background.color <| Colors.background
+                , Font.color <| Colors.text
+                , Font.family
+                    [ Font.external
+                        { name = "Space Mono"
+                        , url = "https://fonts.googleapis.com/css?family=Space Mono"
+                        }
+                    , Font.sansSerif
+                    ]
+                ]
     , title = pageView.title
     }
